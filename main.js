@@ -16,7 +16,6 @@ import userRoute from './src/routes/user'
 
 Joi.objectId = require('joi-objectid')(Joi)
 
-
 const _cache = new NodeCache({ stdTTL: 500, checkperiod: 30 })
 require('console-group').install()
 
@@ -24,7 +23,7 @@ var server = restify.createServer({
   name: 'devfast-api',
   version: '0.0.1',
   formatters: {
-    'application/json': function (req, res, payload) {
+    'application/json': function(req, res, payload) {
       // in formatters, body is the object passed to res.send() NOTE  read: https://github.com/restify/errors/pull/87
       if (payload instanceof Error) {
         const error = payload.body
@@ -127,8 +126,8 @@ console.green(`Connecting to mongo ${MONGO_OPTIONS.uri}`)
 
 mongoose
   .connect(MONGO_OPTIONS.uri, {
-    // user: MONGO_OPTIONS.user,
-    // pass: MONGO_OPTIONS.pass,
+    user: MONGO_OPTIONS.user,
+    pass: MONGO_OPTIONS.pass,
     ...MONGO_OPTIONS.db_options
   })
   .catch(error => console.error(error))
@@ -144,44 +143,6 @@ db.once('open', () => {
   // NOTE  start
   server.listen(PORT, () => {
     console.blue(`Server is listening on port ${PORT}`)
-
-    // server.get('/', (req, res) => {
-    //   res.json({ msg: 'Welcome to devfast api' })
-    // })
-    server.post({
-      path: "/",
-      validation: {
-        schema: Joi.object().keys({
-          body: Joi.object().keys({
-            name: Joi.string().required(),
-            price: Joi.number().required()
-          }).required()
-        })
-      }
-    }, (req, res) => {
-      res.json('hehehe')
-    })
-    // MARK ROUTES
-    userRoute.applyRoutes(server, '/user');
+    userRoute.applyRoutes(server, '/user')
   })
 })
-
-// server.listen(PORT, () => {
-//   console.blue(`Server is listening on port ${PORT}`)
-//   server.get({
-//     path: "/:id",
-//     validation: {
-//       schema: Joi.object().keys({
-//         // body: Joi.object().keys({
-//         //   name: Joi.string().required(),
-//         //   price: Joi.number().required()
-//         // }).required(),
-//         params: Joi.object().keys({
-//           id: Joi.objectId().required()
-//         }).required()
-//       })
-//     }
-//   }, (req, res) => {
-//     res.json('hehehe')
-//   })
-// })

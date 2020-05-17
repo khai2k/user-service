@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-export const PORT = 3000
+export const PORT = 3001
 
 export const MONGO_OPTIONS = {
   uri: process.env.MONGO_URI,
