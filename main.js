@@ -13,7 +13,7 @@ import { PORT, MONGO_OPTIONS } from './configSys'
 import loggerMiddleware from './loggerMiddleware'
 
 import userRoute from './src/routes/user'
-
+import productRoute from './src/routes/product'
 Joi.objectId = require('joi-objectid')(Joi)
 
 const _cache = new NodeCache({ stdTTL: 500, checkperiod: 30 })
@@ -126,8 +126,8 @@ console.green(`Connecting to mongo ${MONGO_OPTIONS.uri}`)
 
 mongoose
   .connect(MONGO_OPTIONS.uri, {
-    user: MONGO_OPTIONS.user,
-    pass: MONGO_OPTIONS.pass,
+   // user: MONGO_OPTIONS.user,
+    //pass: MONGO_OPTIONS.pass,
     ...MONGO_OPTIONS.db_options
   })
   .catch(error => console.error(error))
@@ -144,5 +144,6 @@ db.once('open', () => {
   server.listen(PORT, () => {
     console.blue(`Server is listening on port ${PORT}`)
     userRoute.applyRoutes(server, '/user')
+    productRoute.applyRoutes(server, '/product')
   })
 })

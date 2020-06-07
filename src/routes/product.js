@@ -1,24 +1,22 @@
-import bcrypt from 'bcryptjs'
 import Joi from 'joi'
 Joi.objectId = require('joi-objectid')(Joi)
 
 import restifyRouter from 'restify-router'
-import userDao from '../dao/user'
-import user from '../models/user'
+import productDao from '../dao/product'
 
 const Router = restifyRouter.Router
-const userRoute = new Router()
+const productRoute = new Router()
 
 // Read all user
-userRoute.get("",
+productRoute.get("",
 
   async (req,res)=>{
-    let result = await userDao.readallUser();
+    let result = await productDao.readallUser();
     res.send(result);
   }
 ),
 // Read user
-userRoute.get(
+productRoute.get(
   {
     path: '/:id',
     validation: {
@@ -33,13 +31,13 @@ userRoute.get(
   },
   async (req, res) => {
     let query = req.params.id
-    let result = await userDao.readUser(query)
+    let result = await productDao.readUser(query)
     res.send(result)
   }
 )
 
 // Delete user
-userRoute.del(
+productRoute.del(
   {
     path: '/:id',
     validation: {
@@ -54,22 +52,22 @@ userRoute.del(
   },
   async (req, res) => {
     let query = req.params.id
-    await userDao.deleteUser(query)
+    await productDao.deleteUser(query)
     res.send(200)
   }
 )
 
 //Update user
-userRoute.put(
+productRoute.put(
   {
     path: '/:id',
     validation: {
       schema: Joi.object().keys({
         body: Joi.object()
           .keys({
-            email: Joi.string().required(),
+            brand: Joi.string().required(),
             name: Joi.string().required(),
-            password: Joi.string().required()
+            price: Joi.number().required()
           })
           .required(),
         params: Joi.object()
@@ -83,22 +81,22 @@ userRoute.put(
   async (req, res) => {
     let data = req.body
     let query = req.params.id
-    await userDao.updateUser(data, query)
+    await productDao.updateUser(data, query)
     res.send(200)
   }
 )
 
 //create
-userRoute.post(
+productRoute.post(
   {
     path: '',
     validation: {
       schema: Joi.object().keys({
         body: Joi.object()
           .keys({
-            email: Joi.string().required(),
+            brand: Joi.string().required(),
             name: Joi.string().required(),
-            password: Joi.string().required()
+            price: Joi.number().required()
           })
           .required()
       })
@@ -106,8 +104,8 @@ userRoute.post(
   },
   async (req, res, next) => {
     try {
-      const { email, password, name } = req.body
-      let result = await userDao.createUser({ email, password, name })
+      const { brand, price, name } = req.body
+      let result = await productDao.createUser({ brand, price, name })
       //   console.log(result, 'resultresultresultresult')
       res.send({ data: result })
     } catch (error) {
@@ -116,4 +114,4 @@ userRoute.post(
   }
 )
 
-export default userRoute
+export default productRoute
