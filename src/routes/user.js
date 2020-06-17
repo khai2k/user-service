@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import jwt from "jsonwebtoken"
 import Joi from 'joi'
 Joi.objectId = require('joi-objectid')(Joi)
 
@@ -10,6 +11,17 @@ const Router = restifyRouter.Router
 const userRoute = new Router()
 
 // Read all user
+userRoute.post("/signin",
+  async(req,res)=>{
+    const {name,password}= req.body;
+    console.log(req.body)
+    jwt.sign({user:req.body},'secretkey',(err,token)=>{
+      res.json({
+        token
+      })
+    })
+  }
+)
 userRoute.get("",
 
   async (req,res)=>{

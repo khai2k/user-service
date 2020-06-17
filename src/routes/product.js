@@ -67,7 +67,8 @@ productRoute.put(
           .keys({
             brand: Joi.string().required(),
             name: Joi.string().required(),
-            price: Joi.number().required()
+            price: Joi.number().required(),
+            image: Joi.string().required()
           })
           .required(),
         params: Joi.object()
@@ -96,7 +97,8 @@ productRoute.post(
           .keys({
             brand: Joi.string().required(),
             name: Joi.string().required(),
-            price: Joi.number().required()
+            price: Joi.number().required(),
+            image: Joi.string().required()
           })
           .required()
       })
@@ -104,8 +106,8 @@ productRoute.post(
   },
   async (req, res, next) => {
     try {
-      const { brand, price, name } = req.body
-      let result = await productDao.createUser({ brand, price, name })
+      const { brand, price, name,image } = req.body
+      let result = await productDao.createUser({ brand, price, name,image })
       //   console.log(result, 'resultresultresultresult')
       res.send({ data: result })
     } catch (error) {

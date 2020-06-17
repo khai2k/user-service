@@ -22,6 +22,7 @@
     "esm": "^3.2.25",
     "joi": "^14.3.1",
     "joi-objectid": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
     "link-module-alias": "^1.2.0",
     "lodash": "^4.17.15",
     "loglevel": "^1.6.6",
