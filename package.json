@@ -5,7 +5,6 @@
   "main": "index.js",
   "module": "main.js",
   "scripts": {
-    "postinstall": "link-module-alias",
     "start": "node index.js -- --color",
     "dev": "nodemon index.js -- --color"
   },
