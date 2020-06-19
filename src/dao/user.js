@@ -24,6 +24,19 @@ const user = {
     //   })
     // })
   },
+  async signin(email,password) {
+    let result = await UserModel.findOne({ email: email})
+    if (result) 
+    {
+     const resul=  await bcrypt.compare(password, result.password )
+        if (resul ) return result;
+     
+      // let ff = await bcrypt.compare(password, result.paasword)
+      // console.log(ff,"rffffftresult")
+      // if (ff) return result;
+    }
+    return ;
+  },
   async readUser(query) {
     let result = await UserModel.findById(query)
     return result

@@ -7,12 +7,14 @@ import errors from 'restify-errors'
 import mongoose from 'mongoose'
 import NodeCache from 'node-cache'
 import * as log from 'loglevel'
-import userRoute from './src/routes/user'
-import productRoute from './src/routes/product'
+import Joi from 'joi'
 
 import { PORT, MONGO_OPTIONS } from './configSys'
 import loggerMiddleware from './loggerMiddleware'
 
+import userRoute from './src/routes/user'
+import productRoute from './src/routes/product'
+Joi.objectId = require('joi-objectid')(Joi)
 
 const _cache = new NodeCache({ stdTTL: 500, checkperiod: 30 })
 require('console-group').install()
@@ -43,30 +45,31 @@ global._ = _
 global.isDev = process.env.NODE_ENV !== 'production'
 global._cache = _cache
 
-if (global.isDev) {
-  log.setLevel(0)
-  /* #region   document */
-  // log.info('info-----')
-  // log.debug('debug----')
-  // log.warn('log-----')
-  // log.error('error---')
-  // console.log(log.getLevel(), '----')
-  /* #endregion */
-}
-
+// if (global.isDev) {
+//   log.setLevel(0)
+//   /* #region   document */
+//   // log.info('info-----')
+//   // log.debug('debug----')
+//   // log.warn('log-----')
+//   // log.error('error---')
+//   // console.log(log.getLevel(), '----')
+//   /* #endregion */
+// }
 /* MARK  Middleware  */
-server.use(loggerMiddleware)
+// server.use(loggerMiddleware)
+
 const cors = corsMiddleware({
-  origins: ['http://192.168.1.5:3000', '*'], // defaults to ['*']
-//   credentials: true,
+  origins: ['http://127.0.0.1', '*'], // defaults to ['*']
   methods: ['GET', 'PUT', 'PATCH', 'DELETE', 'POST', 'OPTIONS'],
-  preflightMaxAge: 5, // Optional
-  allowHeaders: ['Authorization'],
+  // preflightMaxAge: 5, // Optional
+  // allowHeaders: ['Authorization','Access-Control-Allow-Origin']
 })
-server.pre(cors.preflight)
+
+
+// server.pre(cors.preflight)
 server.pre(restify.plugins.pre.dedupeSlashes())
 server.pre(restify.plugins.pre.sanitizePath())
-server.use(cors.actual)
+// server.use(cors.actual)
 server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(restify.plugins.queryParser())
 server.use(restify.plugins.jsonp())
@@ -126,8 +129,8 @@ console.green(`Connecting to mongo ${MONGO_OPTIONS.uri}`)
 
 mongoose
   .connect(MONGO_OPTIONS.uri, {
-    // user: MONGO_OPTIONS.user,
-    // pass: MONGO_OPTIONS.pass,
+   // user: MONGO_OPTIONS.user,
+    //pass: MONGO_OPTIONS.pass,
     ...MONGO_OPTIONS.db_options
   })
   .catch(error => console.error(error))
@@ -143,13 +146,7 @@ db.once('open', () => {
   // NOTE  start
   server.listen(PORT, () => {
     console.blue(`Server is listening on port ${PORT}`)
-
-    server.get('/', (req, res) => {
-      res.json({ msg: 'Welcome to devfast api' })
-    })
     userRoute.applyRoutes(server, '/user')
     productRoute.applyRoutes(server, '/product')
-
-    // MARK ROUTES
   })
 })

@@ -1,11 +1,12 @@
 import ProductModel from '../models/product'
 const product = {
-  async createUser({ brand, name, price ,image}) {
+  async createUser({ brand, name, price ,image,countInStock}) {
     let result = await ProductModel.create({
       brand,
       name,
       price,
-      image
+      image,
+      countInStock
     })
     console.log(result, 'resultresultresultresult')
     return result

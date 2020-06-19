@@ -6,7 +6,8 @@
   "module": "main.js",
   "scripts": {
     "start": "node index.js -- --color",
-    "dev": "nodemon index.js -- --color"
+    "dev": "nodemon index.js -- --color",
+    "postinstall": "link-module-alias"
   },
   "license": "MIT",
   "author": "Huy Cuong",
@@ -17,6 +18,7 @@
     "chalk": "^3.0.0",
     "chalk-console": "^1.1.0",
     "console-group": "^0.3.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "joi": "^14.3.1",
@@ -44,6 +46,7 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
+    "nodemon": "^2.0.4",
     "prettier": "^1.18.2"
   },
   "_moduleAliases": {
