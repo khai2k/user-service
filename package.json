@@ -59,8 +59,5 @@
     "~dao": "./src/dao",
     "~middleware": "./src/middleware",
     "~languages": "./src/languages"
-  },
-  "engines": {
-    "node": "v12.18.0"
   }
 }

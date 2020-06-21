@@ -8,13 +8,15 @@ const Router = restifyRouter.Router
 const productRoute = new Router()
 
 // Read all user
-productRoute.get("",
-
-  async (req,res)=>{
-    let result = await productDao.readallUser();
-    res.send(result);
+productRoute.get('', async (req, res) => {
+  try {
+    let result = await productDao.readallUser()
+    res.send(result)
+  } catch (error) {
+    console.log(error, 'errorerror')
+    return res.send(error.message)
   }
-),
+})
 // Read user
 productRoute.get(
   {
@@ -101,7 +103,6 @@ productRoute.post(
             price: Joi.number().required(),
             image: Joi.string().required(),
             countInStock: Joi.number().required()
-
           })
           .required()
       })
@@ -109,8 +110,8 @@ productRoute.post(
   },
   async (req, res, next) => {
     try {
-      const { brand, price, name,image ,countInStock} = req.body
-      let result = await productDao.createUser({ brand, price, name,image,countInStock })
+      const { brand, price, name, image, countInStock } = req.body
+      let result = await productDao.createUser({ brand, price, name, image, countInStock })
       //   console.log(result, 'resultresultresultresult')
       res.send({ data: result })
     } catch (error) {

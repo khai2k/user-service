@@ -21,7 +21,7 @@ var server = restify.createServer({
   name: 'devfast-api',
   version: '0.0.1',
   formatters: {
-    'application/json': function(req, res, payload) {
+    'application/json': function (req, res, payload) {
       // in formatters, body is the object passed to res.send() NOTE  read: https://github.com/restify/errors/pull/87
       if (payload instanceof Error) {
         const error = payload.body
@@ -58,7 +58,7 @@ if (global.isDev) {
 server.use(loggerMiddleware)
 const cors = corsMiddleware({
   origins: ['http://192.168.1.5:3000', '*'], // defaults to ['*']
-//   credentials: true,
+  //   credentials: true,
   methods: ['GET', 'PUT', 'PATCH', 'DELETE', 'POST', 'OPTIONS'],
   preflightMaxAge: 5, // Optional
   allowHeaders: ['Authorization'],
@@ -126,8 +126,8 @@ console.green(`Connecting to mongo ${MONGO_OPTIONS.uri}`)
 
 mongoose
   .connect(MONGO_OPTIONS.uri, {
-    // user: MONGO_OPTIONS.user,
-    // pass: MONGO_OPTIONS.pass,
+    user: MONGO_OPTIONS.user,
+    pass: MONGO_OPTIONS.pass,
     ...MONGO_OPTIONS.db_options
   })
   .catch(error => console.error(error))
