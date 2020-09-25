@@ -8,8 +8,6 @@ import mongoose from 'mongoose'
 import NodeCache from 'node-cache'
 import * as log from 'loglevel'
 import userRoute from './src/routes/user'
-import productRoute from './src/routes/product'
-
 import { PORT, MONGO_OPTIONS } from './configSys'
 import loggerMiddleware from './loggerMiddleware'
 
@@ -126,8 +124,8 @@ console.green(`Connecting to mongo ${MONGO_OPTIONS.uri}`)
 
 mongoose
   .connect(MONGO_OPTIONS.uri, {
-    user: MONGO_OPTIONS.user,
-    pass: MONGO_OPTIONS.pass,
+    // user: MONGO_OPTIONS.user,
+    // pass: MONGO_OPTIONS.pass,
     ...MONGO_OPTIONS.db_options
   })
   .catch(error => console.error(error))
@@ -148,7 +146,6 @@ db.once('open', () => {
       res.json({ msg: 'Welcome to devfast api' })
     })
     userRoute.applyRoutes(server, '/user')
-    productRoute.applyRoutes(server, '/product')
 
     // MARK ROUTES
   })
